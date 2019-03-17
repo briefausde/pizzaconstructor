@@ -15,3 +15,9 @@ and make migrations
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+
+then start the site
+```python
+python manage.py runserver
+```
