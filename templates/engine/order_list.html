@@ -1,0 +1,17 @@
+{% extends 'engine/base.html' %}
+
+{% block content %}
+    <h3>Orders list</h3><br>
+
+    <div class="card" style="width: 100%">
+        <ul class="list-group list-group-flush">
+            {% for order in orders %}
+                <li class="list-group-item">
+                    <a href="{% url 'order_detail' order.id %}">{{ order }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+{% endblock %}

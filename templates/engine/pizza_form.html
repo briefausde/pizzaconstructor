@@ -1,0 +1,59 @@
+{% extends 'engine/base.html' %}
+
+{% block content %}
+    <form>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <table id="ingredients">
+        </table>
+        <input type="submit" class="btn btn-primary" value="Submit" id="create-order">
+    </form>
+    <script>
+        $("#wrapper").toggleClass("toggled");
+    </script>
+
+    <script>
+        {# TODO: should be in JS file #}
+        let items = {{ ingredients|safe }};
+
+        for (let group in items) {
+            let ingredients = null;
+            for (let i = 0; i < items[group].length; i++) {
+                let ingredient = items[group][i];
+                ingredients += `<td>${ingredient[1]} (${ingredient[2]}$)<br><input type="number"
+                                                                                   id="id_ingredient_${ingredient[1]}"
+                                                                                   class="form-control"
+                                                                                   name="${ingredient[0]}"
+                                                                                   min=0
+                                                                                   placeholder="0"></td>`;
+            }
+            $('#ingredients').append(`<tr><th>${group}</th></tr><tr>${ingredients}</tr>`);
+        }
+
+        $('#create-order').on('click', function (event) {
+            event.preventDefault();
+
+            let pizza = new FormData();
+            pizza.append('csrfmiddlewaretoken', $('input[name=csrfmiddlewaretoken]').attr("value"));
+            for (let group in items) {
+                for (let i = 0; i < items[group].length; i++) {
+                    let ingredient = items[group][i];
+                    pizza.append(ingredient[1], $('#id_ingredient_' + ingredient[1]).val());
+                }
+            }
+            pizza.append('dough', $("#id_dough input[type='radio']:checked").val());
+
+            $.ajax({
+                url: "{% url 'pizza_create' %}",
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: pizza,
+                success: function (data) {
+                    window.location.href = data;
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

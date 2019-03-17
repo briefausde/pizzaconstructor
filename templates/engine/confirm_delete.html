@@ -1,0 +1,17 @@
+{% extends 'engine/base.html' %}
+
+{% block content %}
+    <div class="table-form">
+        <form action="" method="post">
+            {% csrf_token %}
+            <p>The following objects as well as their related objects will be deleted or changed. Are you sure?</p>
+            <br>
+            <ul>
+                <li>{{ object }}</li>
+            </ul>
+            <br>
+            <input type="submit" class="btn btn-primary" value="Confirm" name="confirm_delete" />
+            <input type="button" class="btn btn-primary" value="Cancel" onclick="window.history.back()" />
+        </form>
+    </div>
+{% endblock %}

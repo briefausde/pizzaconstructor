@@ -1,0 +1,37 @@
+{% extends 'engine/base.html' %}
+
+{% block content %}
+    {% if not order.is_created %}
+        <div class="table-form">
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <input type="submit" class="btn btn-primary" value="Submit">
+                <br><br>
+            </form>
+            <b>Dough:</b> {{ order.pizza.get_dough_display }}<br>
+            {% if order.pizza.ingredients %}
+                <b>Ingredients</b><br>
+                {% for pizza_ingredient in order.pizza.ingredients.all %}
+                    {{ pizza_ingredient.ingredient.name }} ({{ pizza_ingredient.ingredient.cost }}$): {{ pizza_ingredient.amount }}<br>
+                {% endfor %}
+                <br>Total sum: {{ order.price }}$
+            {% endif %}
+        </div>
+    {% else %}
+        {% if order.is_confirm %}
+            Success order!<br><br>
+            <b>Dough:</b> {{ order.pizza.get_dough_display }}
+            {% if order.pizza.ingredients %}
+                <b>Ingredients</b><br>
+                {% for pizza_ingredient in order.pizza.ingredients.all %}
+                    {{ pizza_ingredient.ingredient.name }} ({{ pizza_ingredient.ingredient.cost }}$): {{ pizza_ingredient.amount }}<br>
+                {% endfor %}
+                <br>Total sum: {{ order.price }}$
+            {% endif %}
+        {% else %}
+            Please, confirm order via link in email
+        {% endif %}
+    {% endif %}
+{% endblock %}
+

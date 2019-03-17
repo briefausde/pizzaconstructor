@@ -1,0 +1,14 @@
+{% autoescape off %}
+    Hi, {{ order.name|title }}!
+
+    Dough: {{ order.pizza.get_dough_display }}
+    {% if order.pizza.ingredients %}
+        Ingredients:
+        {% for pizza_ingredient in order.pizza.ingredients.all %}
+            {{ pizza_ingredient.ingredient.name }}: {{ pizza_ingredient.amount }}
+        {% endfor %}
+        Total sum: {{ order.price }}$
+    {% endif %}
+    Please confirm your order
+    http://{{ domain }}{% url 'order_confirm' order.id confirm_code %}
+{% endautoescape %}

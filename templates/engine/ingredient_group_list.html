@@ -1,0 +1,21 @@
+{% extends 'engine/base.html' %}
+
+{% block content %}
+    <h3>Ingredient Groups list</h3><br>
+
+    <div class="card" style="width: 100%">
+        <ul class="list-group list-group-flush">
+            {% for group in groups %}
+                <li class="list-group-item">
+                    <a href="{% url 'ingredient_group_update' group.pk %}">{{ group }}</a>
+                    <p class="pull-right">
+                        <a href="{% url 'ingredient_group_delete' group.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="{% url 'ingredient_group_create' %}"><span class="glyphicon glyphicon-plus"> Create new ingredient group</span></a>
+
+{% endblock %}

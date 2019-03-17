@@ -1,0 +1,30 @@
+{% extends 'engine/base.html' %}
+
+{% block content %}
+    {% if not order.is_created %}
+
+    {% else %}
+        <b>Customer</b><br>
+        Email: {{ order.email }}<br>
+        Phone: {{ order.phone }}<br>
+        Name: {{ order.name }}<br>
+        {% if order.is_confirm %}
+            Confirmed at {{ order.confirmed_date }}<br>
+        {% else %}
+            Not confirmed<br>
+        {% endif %}
+
+        <br>
+
+        <b>Dough:</b> {{ order.pizza.get_dough_display }}<br>
+        {% if order.pizza.ingredients %}
+            <b>Ingredients</b><br>
+            {% for pizza_ingredient in order.pizza.ingredients.all %}
+                {{ pizza_ingredient.ingredient.name }} ({{ pizza_ingredient.ingredient.cost }}$): {{ pizza_ingredient.amount }}<br>
+            {% endfor %}
+            <br>Total sum: {{ order.price }}$
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
+
